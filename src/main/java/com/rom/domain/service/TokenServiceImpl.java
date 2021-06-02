@@ -37,4 +37,9 @@ public class TokenServiceImpl implements TokenService {
     public void deleteById(String id) {
         repository.deleteById(id);
     }
+
+    @Override
+    public boolean exists(String id) {
+        return repository.existsById(id);
+    }
 }

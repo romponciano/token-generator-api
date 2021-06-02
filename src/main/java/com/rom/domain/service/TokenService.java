@@ -14,4 +14,6 @@ public interface TokenService {
     Token update(Token user);
 
     void deleteById(String id);
+
+    boolean exists(String id);
 }

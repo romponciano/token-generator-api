@@ -14,4 +14,6 @@ public interface ModelService {
     Model update(Model model);
 
     void deleteById(String id);
+
+    boolean exists(String id);
 }

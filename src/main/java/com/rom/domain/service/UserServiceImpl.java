@@ -5,8 +5,6 @@ import com.rom.domain.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -14,8 +12,16 @@ public class UserServiceImpl implements UserService {
     private UserRepository repository;
 
     @Override
-    public User getById(String id) {
-        return repository.findById(id).get();
+    public String login(User login) {
+        User official =  repository.findById(login.getUsername()).get();
+        return login.getPassword().equals(official.getPassword())
+                ? String.valueOf(official.hashCode())
+                : null;
+    }
+
+    @Override
+    public boolean exists(String id) {
+        return repository.existsById(id);
     }
 
     @Override
