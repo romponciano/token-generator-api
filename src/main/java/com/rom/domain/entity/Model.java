@@ -17,6 +17,9 @@ public class Model {
         this.fields = fields;
     }
 
+    public Model() {
+    }
+
     public String getId() {
         return id;
     }

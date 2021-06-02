@@ -13,6 +13,9 @@ public class Field {
         this.value = value;
     }
 
+    public Field() {
+    }
+
     public String getName() {
         return name;
     }

@@ -19,6 +19,9 @@ public class Token {
         this.fields = fields;
     }
 
+    public Token() {
+    }
+
     public String getId() {
         return id;
     }
