@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class TokenServiceImpl implements TokenService {
@@ -20,7 +21,8 @@ public class TokenServiceImpl implements TokenService {
 
     @Override
     public Token getById(String id) {
-        return repository.findById(id).get();
+        Optional<Token> res = repository.findById(id);
+        return res.orElse(null);
     }
 
     @Override

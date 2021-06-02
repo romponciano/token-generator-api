@@ -5,6 +5,8 @@ import com.rom.domain.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -13,9 +15,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public String login(User login) {
-        User official =  repository.findById(login.getUsername()).get();
-        return login.getPassword().equals(official.getPassword())
-                ? String.valueOf(official.hashCode())
+        Optional<User> official =  repository.findById(login.getUsername());
+
+        if(!official.isPresent()) return null;
+
+        User user = official.get();
+        return login.getPassword().equals(user.getPassword())
+                ? String.valueOf(user.hashCode())
                 : null;
     }
 
