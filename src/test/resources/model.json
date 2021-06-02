@@ -1,0 +1,20 @@
+{
+  "id": "KFDJAFD90A8784",
+  "fields": [
+    {
+      "name": "player name",
+      "type": "text",
+      "value": null
+    },
+    {
+      "name": "level",
+      "type": "number",
+      "value": null
+    },
+    {
+      "name": "class",
+      "type": "select",
+      "value": null
+    }
+  ]
+}
