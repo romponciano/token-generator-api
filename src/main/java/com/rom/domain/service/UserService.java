@@ -4,13 +4,15 @@ import com.rom.domain.entity.User;
 
 public interface UserService {
 
-    User create(User user);
+    User getById(String id);
 
-    User update(User user);
+    User save(User user);
     
     void deleteById(String id);
 
     String login(User request);
 
     boolean exists(String id);
+
+    boolean exists(String username, String modelName);
 }

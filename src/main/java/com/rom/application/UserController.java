@@ -20,19 +20,17 @@ public class UserController {
         if(hash == null) throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         return hash;
     }
+
+    @GetMapping("/user/{id}")
+    public User getById(@PathVariable String id) {
+        if(!service.exists(id))
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        return service.getById(id);
+    }
     
     @PostMapping("/user")
-    public User create(@RequestBody User user) {
-        if(service.exists(user.getUsername()))
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
-        return service.create(user);
-    }
-
-    @PutMapping("/user")
-    public User update(@RequestBody User user) {
-        if(!service.exists(user.getUsername()))
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
-        return service.update(user);
+    public User save(@RequestBody User user) {
+        return service.save(user);
     }
 
     @DeleteMapping("/user/{id}")

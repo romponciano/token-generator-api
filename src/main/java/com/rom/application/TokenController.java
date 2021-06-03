@@ -16,34 +16,14 @@ public class TokenController {
     @Autowired
     private TokenService service;
 
-    @GetMapping("/token")
-    public List<Token> getAll() {
-        return service.getAll();
-    }
-
-    @GetMapping("/token/{id}")
-    public Token getById(@PathVariable String id) {
-        return service.getById(id);
-    }
-
-    @PostMapping("/token")
-    public Token create(@RequestBody Token token) {
-        if(service.exists(token.getId()))
+    @PostMapping("/{username}/model/{modelId}/token")
+    public void save(
+            @PathVariable String username,
+            @PathVariable String modelId,
+            @RequestBody List<Token> tokens
+    ) {
+        if(!service.exists(username, modelId))
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
-        return service.create(token);
-    }
-
-    @PutMapping("/token")
-    public Token update(@RequestBody Token token) {
-        if(!service.exists(token.getId()))
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
-        return service.update(token);
-    }
-
-    @DeleteMapping("/token/{id}")
-    public void deleteById(@PathVariable String id) {
-        if(!service.exists(id))
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
-        service.deleteById(id);
+        service.save(username, modelId, tokens);
     }
 }

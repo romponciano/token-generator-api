@@ -1,47 +1,46 @@
 package com.rom.domain.service;
 
 import com.rom.domain.entity.Model;
-import com.rom.domain.repository.ModelRepository;
+import com.rom.domain.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.HashMap;
 
 @Service
 public class ModelServiceImpl implements ModelService {
 
     @Autowired
-    private ModelRepository repository;
+    private UserService service;
 
     @Override
-    public List<Model> getAll() {
-        return repository.findAll();
+    public HashMap<String, Model> getAll(String username) {
+        return service.getById(username).getModels();
     }
 
     @Override
-    public Model getById(String id) {
-        Optional<Model> res = repository.findById(id);
-        return res.orElse(null);
+    public Model getById(String username, String modelName) {
+        return service.getById(username).getModels().get(modelName);
     }
 
     @Override
-    public Model create(Model model) {
-        return repository.save(model);
+    public void save(String username, String modelName, Model model) {
+        User user = service.getById(username);
+        user.getModels().put(modelName, model);
+        service.save(user);
     }
 
     @Override
-    public Model update(Model model) {
-        return repository.save(model);
+    public void deleteById(String username, String modelName) {
+        User user = service.getById(username);
+        user.getModels().remove(modelName);
+        service.save(user);
     }
 
     @Override
-    public void deleteById(String id) {
-        repository.deleteById(id);
+    public boolean exists(String username, String modelName) {
+        return service.exists(username, modelName);
     }
 
-    @Override
-    public boolean exists(String id) {
-        return repository.existsById(id);
-    }
+
 }

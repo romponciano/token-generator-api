@@ -19,6 +19,9 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(value = UserController.class)
@@ -38,15 +41,17 @@ public class UserControllerTest {
     }
 
     @Test
-    public void return_hash_when_login_correct() throws Exception {
+    public void return_hash_when_loginSuccessfully() throws Exception {
         String hash = String.valueOf(user.hashCode());
-        Mockito.when(service.login(user)).thenReturn(hash);
+        Mockito.when(service.login(any(User.class))).thenReturn(hash);
 
         String json = Utils.resource("user.json");
+        assert json != null;
 
+        String url = "/tg/user/login";
         String response = mockMvc
-                .perform(
-                        MockMvcRequestBuilders.post("/tg/user/login")
+                .perform(MockMvcRequestBuilders
+                        .post(url)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json)
                 )
@@ -55,36 +60,63 @@ public class UserControllerTest {
                 .getResponse().getContentAsString();
 
         assertEquals(hash, gson.fromJson(response, String.class));
-
     }
 
     @Test
-    public void return_badRequest_when_login_incorrect() throws Exception {
-        Mockito.when(service.login(user)).thenReturn(null);
-
-        String json = Utils.resource("user.json");
-
-        mockMvc
-                .perform(
-                        MockMvcRequestBuilders.post("/tg/user/login")
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content(json)
-                )
-                .andExpect(MockMvcResultMatchers.status().isBadRequest());
-
-    }
-
-    @Test
-    public void return_created_when_post_correct() throws Exception {
-        Mockito.when(service.create(any(User.class))).thenReturn(user);
-        Mockito.when(service.exists(user.getUsername())).thenReturn(false);
+    public void return_hash_when_wrong_login() throws Exception {
+        Mockito.when(service.login(any(User.class))).thenReturn(null);
 
         String json = Utils.resource("user.json");
         assert json != null;
 
+        String url = "/tg/user/login";
+        mockMvc
+                .perform(MockMvcRequestBuilders
+                        .post(url)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(json)
+                )
+                .andExpect(MockMvcResultMatchers.status().isBadRequest());
+    }
+
+    @Test
+    public void return_ok_when_getById_correct() throws Exception {
+        Mockito.when(service.exists(user.getUsername())).thenReturn(true);
+        Mockito.when(service.getById(user.getUsername())).thenReturn(user);
+
+        String url = "/tg/user/" + user.getUsername();
+        String response = mockMvc
+                .perform(MockMvcRequestBuilders.get(url))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andReturn()
+                .getResponse().getContentAsString();
+
+        assertEquals(user, gson.fromJson(response, User.class));
+    }
+
+    @Test
+    public void return_ok_when_getById_notExists() throws Exception {
+        Mockito.when(service.exists(user.getUsername())).thenReturn(false);
+
+        String url = "/tg/user/" + user.getUsername();
+        mockMvc
+                .perform(MockMvcRequestBuilders.get(url))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest());
+
+        verify(service, times(0)).getById(user.getUsername());
+    }
+
+    @Test
+    public void return_saved_when_userCorrect() throws Exception {
+        Mockito.when(service.save(any(User.class))).thenReturn(user);
+
+        String json = Utils.resource("user.json");
+        assert json != null;
+
+        String url = "/tg/user";
         String response = mockMvc
                 .perform(MockMvcRequestBuilders
-                        .post("/tg/user")
+                        .post(url)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json)
                 )
@@ -96,75 +128,28 @@ public class UserControllerTest {
     }
 
     @Test
-    public void return_badRequest_when_post_existentId() throws Exception {
-        Mockito.when(service.create(any(User.class))).thenReturn(user);
+    public void return_ok_when_deleteById_correct() throws Exception {
         Mockito.when(service.exists(user.getUsername())).thenReturn(true);
-
-        String json = Utils.resource("user.json");
-        assert json != null;
-
-        mockMvc
-                .perform(MockMvcRequestBuilders
-                        .post("/tg/user")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(json)
-                )
-                .andExpect(MockMvcResultMatchers.status().isBadRequest());
-    }
-
-    @Test
-    public void return_updated_when_put_correct() throws Exception {
-        Mockito.when(service.update(any(User.class))).thenReturn(user);
-        Mockito.when(service.exists(user.getUsername())).thenReturn(true);
-
-        String json = Utils.resource("user.json");
-        assert json != null;
-
-        String response = mockMvc
-                .perform(MockMvcRequestBuilders
-                        .put("/tg/user")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(json)
-                )
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andReturn()
-                .getResponse().getContentAsString();
-
-        assertEquals(user, gson.fromJson(response, User.class));
-    }
-
-    @Test
-    public void return_badRequest_when_put_inexistentId() throws Exception {
-        Mockito.when(service.exists(user.getUsername())).thenReturn(false);
-
-        String json = Utils.resource("user.json");
-        assert json != null;
-
-        mockMvc
-                .perform(MockMvcRequestBuilders
-                        .put("/tg/user")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(json)
-                )
-                .andExpect(MockMvcResultMatchers.status().isBadRequest());
-    }
-
-    @Test
-    public void return_ok_when_delete_correct() throws Exception {
         Mockito.doNothing().when(service).deleteById(user.getUsername());
-        Mockito.when(service.exists(user.getUsername())).thenReturn(true);
 
+        String url = "/tg/user/" + user.getUsername();
         mockMvc
-                .perform(MockMvcRequestBuilders.delete("/tg/user/" + user.getUsername()))
+                .perform(MockMvcRequestBuilders.delete(url))
                 .andExpect(MockMvcResultMatchers.status().isOk());
+
+        verify(service, times(1)).deleteById(user.getUsername());
     }
 
+
     @Test
-    public void return_badRequest_when_delete_inexistentId() throws Exception {
+    public void return_badRequest_when_deleteById_useranemeNotExists() throws Exception {
         Mockito.when(service.exists(user.getUsername())).thenReturn(false);
 
+        String url = "/tg/user/" + user.getUsername();
         mockMvc
-                .perform(MockMvcRequestBuilders.delete("/tg/user/" + user.getUsername()))
+                .perform(MockMvcRequestBuilders.delete(url))
                 .andExpect(MockMvcResultMatchers.status().isBadRequest());
+
+        verify(service, times(0)).deleteById(anyString());
     }
 }

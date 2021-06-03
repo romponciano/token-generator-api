@@ -7,7 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.List;
+import java.util.HashMap;
 
 @RestController
 @RequestMapping("/tg")
@@ -16,34 +16,50 @@ public class ModelController {
     @Autowired
     private ModelService service;
 
-    @GetMapping("/model")
-    public List<Model> getAll() {
-        return service.getAll();
-    }
-
-    @GetMapping("/model/{id}")
-    public Model getById(@PathVariable String id) {
-        return service.getById(id);
-    }
-
-    @PostMapping("/model")
-    public Model create(@RequestBody Model model) {
-        if(service.exists(model.getId()))
+    @GetMapping("/{username}/model")
+    public HashMap<String, Model> getAll(@PathVariable String username) {
+        try {
+            return service.getAll(username);
+        } catch (Throwable e) {
+            e.printStackTrace();
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
-        return service.create(model);
+        }
     }
 
-    @PutMapping("/model")
-    public Model update(@RequestBody Model model) {
-        if(!service.exists(model.getId()))
+    @GetMapping("/{username}/model/{modelName}")
+    public Model getById(
+            @PathVariable String username,
+            @PathVariable String modelName
+    ) {
+        try {
+            return service.getById(username, modelName);
+        } catch (Throwable e) {
+            e.printStackTrace();
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
-        return service.update(model);
+        }
     }
 
-    @DeleteMapping("/model/{id}")
-    public void deleteById(@PathVariable String id) {
-        if(!service.exists(id))
+    @PostMapping("/{username}/model/{modelName}")
+    public void save(
+            @PathVariable String username,
+            @PathVariable String modelName,
+            @RequestBody Model model
+    ) {
+        try {
+            service.save(username, modelName, model);
+        } catch (Throwable e) {
+            e.printStackTrace();
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
-        service.deleteById(id);
+        }
+    }
+
+    @DeleteMapping("/{username}/model/{modelName}")
+    public void deleteById(
+            @PathVariable String username,
+            @PathVariable String modelName
+    ) {
+        if(!service.exists(username, modelName))
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        service.deleteById(username, modelName);
     }
 }

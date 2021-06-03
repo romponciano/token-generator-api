@@ -31,13 +31,24 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User create(User user) {
-        return repository.save(user);
+    public boolean exists(String username, String modelName) {
+        Optional<User> user = repository.findById(username);
+        return user.filter(u -> u.getModels().get(modelName) != null).isPresent();
     }
 
     @Override
-    public User update(User user) {
-        return repository.save(user);
+    public User save(User user) {
+        User res = repository.save(user);
+        res.setPassword(null);
+        return res;
+    }
+
+    @Override
+    public User getById(String id) {
+        if(!exists(id)) return null;
+        User res = repository.findById(id).get();
+        res.setPassword(null);
+        return res;
     }
 
     @Override

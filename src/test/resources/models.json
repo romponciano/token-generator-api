@@ -1,0 +1,110 @@
+{
+  "MODEL1": {
+    "tokens": [
+      {
+        "name": "player name",
+        "type": "text",
+        "value": "name1"
+      },
+      {
+        "name": "level",
+        "type": "number",
+        "value": 10
+      },
+      {
+        "name": "class",
+        "type": "select",
+        "value": "value"
+      }
+    ],
+    "fields": [
+      {
+        "name": "player name",
+        "type": "text",
+        "value": null
+      },
+      {
+        "name": "level",
+        "type": "number",
+        "value": null
+      },
+      {
+        "name": "class",
+        "type": "select",
+        "value": null
+      }
+    ]
+  },
+  "MODEL2": {
+    "tokens": [
+      {
+        "name": "player name",
+        "type": "text",
+        "value": "name1"
+      },
+      {
+        "name": "level",
+        "type": "number",
+        "value": 10
+      },
+      {
+        "name": "class",
+        "type": "select",
+        "value": "value"
+      }
+    ],
+    "fields": [
+      {
+        "name": "player name",
+        "type": "text",
+        "value": null
+      },
+      {
+        "name": "level",
+        "type": "number",
+        "value": null
+      },
+      {
+        "name": "class",
+        "type": "select",
+        "value": null
+      }
+    ]
+  },
+  "MODEL3": {
+    "tokens": [
+      {
+        "name": "player name",
+        "type": "text",
+        "value": "name1"
+      },
+      {
+        "name": "level",
+        "type": "number",
+        "value": 10
+      },
+      {
+        "name": "class",
+        "type": "select",
+        "value": "value"
+      }
+    ],
+    "fields": [
+      {
+        "name": "player name",
+        "type": "text",
+        "value": null
+      },
+      {
+        "name": "level",
+        "type": "number",
+        "value": null
+      },
+      {
+        "name": "class",
+        "type": "select",
+        "value": null
+      }
+    ]
+  }
+}

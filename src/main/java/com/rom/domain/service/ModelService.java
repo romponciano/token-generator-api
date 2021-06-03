@@ -2,18 +2,16 @@ package com.rom.domain.service;
 
 import com.rom.domain.entity.Model;
 
-import java.util.List;
+import java.util.HashMap;
 
 public interface ModelService {
-    List<Model> getAll();
+    HashMap<String, Model> getAll(String username);
 
-    Model getById(String id);
+    Model getById(String username, String modelName);
 
-    Model create(Model model);
+    void save(String username, String modelName, Model model);
 
-    Model update(Model model);
+    void deleteById(String username, String modelName);
 
-    void deleteById(String id);
-
-    boolean exists(String id);
+    boolean exists(String username, String modelName);
 }

@@ -5,15 +5,7 @@ import com.rom.domain.entity.Token;
 import java.util.List;
 
 public interface TokenService {
-    List<Token> getAll();
+    void save(String username, String modelId, List<Token> tokens);
 
-    Token getById(String id);
-
-    Token create(Token user);
-
-    Token update(Token user);
-
-    void deleteById(String id);
-
-    boolean exists(String id);
+    boolean exists(String username, String modelName);
 }

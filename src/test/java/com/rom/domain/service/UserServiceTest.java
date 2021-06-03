@@ -14,8 +14,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
 import java.util.Optional;
 
 import static org.junit.Assert.*;
@@ -58,7 +57,7 @@ public class UserServiceTest {
     public void return_null_when_password_incorrect() {
         Mockito.when(repository.findById(user.getUsername())).thenReturn(Optional.of(user));
 
-        User user2 = new User(user.getUsername(), "wrong-pass");
+        User user2 = new User(user.getUsername(), "wrong-pass", new HashMap<>());
 
         assertNull(service.login(user2));
     }
@@ -67,14 +66,7 @@ public class UserServiceTest {
     public void return_created_when_create_correct() {
         Mockito.when(repository.save(any(User.class))).thenReturn(user);
 
-        assertEquals(user, service.create(user));
-    }
-
-    @Test
-    public void return_updated_when_update_correct() {
-        Mockito.when(repository.save(any(User.class))).thenReturn(user);
-
-        assertEquals(user, service.update(user));
+        assertEquals(user, service.save(user));
     }
 
     @Test
@@ -98,5 +90,42 @@ public class UserServiceTest {
         Mockito.when(repository.existsById(user.getUsername())).thenReturn(false);
 
         assertFalse(service.exists(user.getUsername()));
+    }
+
+    @Test
+    public void return_true_when_existsUsernameAndModel() {
+        Mockito.when(repository.findById(user.getUsername())).thenReturn(Optional.of(user));
+
+        assertTrue(service.exists(user.getUsername(), "MODEL1"));
+    }
+
+    @Test
+    public void return_false_when_not_usernameNoexists() {
+        Mockito.when(repository.findById("invalid")).thenReturn(Optional.empty());
+
+        assertFalse(service.exists("invalid", "MODEL1"));
+    }
+
+    @Test
+    public void return_false_when_not_usernameexistsButNoModel() {
+        Mockito.when(repository.findById(user.getUsername())).thenReturn(Optional.of(user));
+
+        assertFalse(service.exists(user.getUsername(), "invalid model"));
+    }
+
+    @Test
+    public void return_user_when_getById_correct() {
+        Mockito.when(repository.existsById(user.getUsername())).thenReturn(true);
+        Mockito.when(repository.findById(user.getUsername())).thenReturn(Optional.of(user));
+
+        user.setPassword(null);
+        assertEquals(user, service.getById(user.getUsername()));
+    }
+
+    @Test
+    public void return_null_when_getById_invalid() {
+        Mockito.when(repository.existsById("invalid")).thenReturn(false);
+
+        assertNull(service.getById("invalid"));
     }
 }

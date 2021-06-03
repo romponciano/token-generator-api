@@ -1,10 +1,8 @@
 package com.rom.domain.service;
 
-
 import com.google.gson.Gson;
 import com.rom.Utils;
-import com.rom.domain.entity.Token;
-import com.rom.domain.repository.TokenRepository;
+import com.rom.domain.entity.User;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,92 +12,107 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
 import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(value = TokenService.class)
 public class TokenServiceTest {
 
     @MockBean
-    private TokenRepository repository;
+    private UserService userService;
 
     @Autowired
     private TokenService service;
 
     private final Gson gson = new Gson();
-    private Token token;
+    private User user;
 
     @Before
     public void setup() {
-        token = gson.fromJson(Utils.resource("token.json"), Token.class);
+        user = gson.fromJson(Utils.resource("user.json"), User.class);
     }
 
     @Test
-    public void return_all_when_getAll_correct() {
-        List<Token> models = new ArrayList<>();
-        models.add(token);
-        models.add(token);
-        models.add(token);
-
-        Mockito.when(repository.findAll()).thenReturn(models);
-
-        assertEquals(models, service.getAll());
+    public void return_true_when_existsUserAndModel() {
+        Mockito.when(userService.getById(user.getUsername())).thenReturn(user);
+        assertTrue(service.exists(user.getUsername(), "MODEL1"));
     }
 
     @Test
-    public void return_correctId_when_getById_correct() {
-        Mockito.when(repository.findById(token.getId())).thenReturn(Optional.of(token));
-
-        assertEquals(token, service.getById(token.getId()));
+    public void return_false_when_existsUserButNoModel() {
+        Mockito.when(userService.getById(user.getUsername())).thenReturn(user);
+        assertFalse(service.exists(user.getUsername(), "inexistent model"));
     }
 
     @Test
-    public void return_null_when_getById_empty() {
-        Mockito.when(repository.findById(token.getId())).thenReturn(Optional.empty());
-
-        assertNull(service.getById(token.getId()));
+    public void return_false_when_NoexistsUserButWithModel() {
+        Mockito.when(userService.getById(user.getUsername())).thenReturn(null);
+        assertFalse(service.exists(user.getUsername(), "MODEL 1"));
     }
 
     @Test
-    public void return_created_when_create_correct() {
-        Mockito.when(repository.save(any(Token.class))).thenReturn(token);
-
-        assertEquals(token, service.create(token));
+    public void return_false_when_NoexistsUserAndNoModel() {
+        Mockito.when(userService.getById(user.getUsername())).thenReturn(null);
+        assertFalse(service.exists(user.getUsername(), "inexistent model"));
     }
 
     @Test
-    public void return_updated_when_update_correct() {
-        Mockito.when(repository.save(any(Token.class))).thenReturn(token);
+    public void return_ok_when_usernameAndModelExists() {
+        Mockito.when(userService.getById(user.getUsername())).thenReturn(user);
 
-        assertEquals(token, service.update(token));
+        service.save(user.getUsername(), "MODEL1", user.getModels().get("MODEL1").getTokens());
+
+        verify(userService, times(1)).save(any(User.class));
     }
 
     @Test
-    public void return_ok_when_delete_correct() {
-        Mockito.doNothing().when(repository).deleteById(token.getId());
+    public void return_exception_when_NousernameButModelExists() {
+        Mockito.when(userService.getById(user.getUsername())).thenReturn(user);
 
-        service.deleteById(token.getId());
+        assertThrows(
+                NullPointerException.class,
+                () -> service.save(
+                        "invalid username",
+                        "MODEL1",
+                        user.getModels().get("MODEL1").getTokens()
+                )
+        );
 
-        Mockito.verify(repository, times(1)).deleteById(token.getId());
+        verify(userService, times(0)).save(any(User.class));
     }
 
     @Test
-    public void return_true_when_exists() {
-        Mockito.when(repository.existsById(token.getId())).thenReturn(true);
+    public void return_exception_when_usernameButNoModelExists() {
+        Mockito.when(userService.getById(user.getUsername())).thenReturn(user);
 
-        assertTrue(service.exists(token.getId()));
+        assertThrows(
+                NullPointerException.class,
+                () -> service.save(
+                        user.getUsername(),
+                        "invalid model",
+                        user.getModels().get("MODEL1").getTokens()
+                )
+        );
+
+        verify(userService, times(0)).save(any(User.class));
     }
 
     @Test
-    public void return_false_when_not_exists() {
-        Mockito.when(repository.existsById(token.getId())).thenReturn(false);
+    public void return_exception_when_NousernameAndNoModelExists() {
+        Mockito.when(userService.getById(user.getUsername())).thenReturn(user);
 
-        assertFalse(service.exists(token.getId()));
+        assertThrows(
+                NullPointerException.class,
+                () -> service.save(
+                        "invalid username",
+                        "invalid model",
+                        user.getModels().get("MODEL1").getTokens()
+                )
+        );
+
+        verify(userService, times(0)).save(any(User.class));
     }
 }

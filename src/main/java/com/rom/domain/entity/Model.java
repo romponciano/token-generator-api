@@ -1,31 +1,18 @@
 package com.rom.domain.entity;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
-
 import java.util.List;
 import java.util.Objects;
 
-@Document
 public class Model {
-    @Id
-    private String id;
     private List<Field> fields;
-
-    public Model(String id, List<Field> fields) {
-        this.id = id;
-        this.fields = fields;
-    }
+    private List<Token> tokens;
 
     public Model() {
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
+    public Model(List<Field> fields, List<Token> tokens) {
+        this.fields = fields;
+        this.tokens = tokens;
     }
 
     public List<Field> getFields() {
@@ -36,12 +23,12 @@ public class Model {
         this.fields = fields;
     }
 
-    @Override
-    public String toString() {
-        return "Model{" +
-                "id='" + id + '\'' +
-                ", fields=" + fields +
-                '}';
+    public List<Token> getTokens() {
+        return tokens;
+    }
+
+    public void setTokens(List<Token> tokens) {
+        this.tokens = tokens;
     }
 
     @Override
@@ -49,11 +36,19 @@ public class Model {
         if (this == o) return true;
         if (!(o instanceof Model)) return false;
         Model model = (Model) o;
-        return Objects.equals(id, model.id) && Objects.equals(fields, model.fields);
+        return Objects.equals(getFields(), model.getFields()) && Objects.equals(getTokens(), model.getTokens());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, fields);
+        return Objects.hash(getFields(), getTokens());
+    }
+
+    @Override
+    public String toString() {
+        return "Model{" +
+                "fields=" + fields +
+                ", tokens=" + tokens +
+                '}';
     }
 }

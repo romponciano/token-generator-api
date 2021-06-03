@@ -1,47 +1,29 @@
 package com.rom.domain.service;
 
 import com.rom.domain.entity.Token;
-import com.rom.domain.repository.TokenRepository;
+import com.rom.domain.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class TokenServiceImpl implements TokenService {
 
     @Autowired
-    private TokenRepository repository;
+    private UserService service;
 
     @Override
-    public List<Token> getAll() {
-        return repository.findAll();
+    public void save(String username, String modelName, List<Token> tokens) {
+        User user = service.getById(username);
+        user.getModels().get(modelName).setTokens(tokens);
+        service.save(user);
     }
 
     @Override
-    public Token getById(String id) {
-        Optional<Token> res = repository.findById(id);
-        return res.orElse(null);
-    }
-
-    @Override
-    public Token create(Token token) {
-        return repository.save(token);
-    }
-
-    @Override
-    public Token update(Token token) {
-        return repository.save(token);
-    }
-
-    @Override
-    public void deleteById(String id) {
-        repository.deleteById(id);
-    }
-
-    @Override
-    public boolean exists(String id) {
-        return repository.existsById(id);
+    public boolean exists(String username, String modelName) {
+        User user = service.getById(username);
+        if(user == null) return false;
+        return user.getModels().get(modelName) != null;
     }
 }
