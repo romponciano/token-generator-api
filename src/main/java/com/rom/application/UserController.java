@@ -14,6 +14,7 @@ public class UserController {
     @Autowired
     private UserService service;
 
+    @CrossOrigin(originPatterns = "*")
     @PostMapping("/user/login")
     public String login(@RequestBody User user) {
         String hash = service.login(user);

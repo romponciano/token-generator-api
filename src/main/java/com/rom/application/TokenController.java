@@ -10,13 +10,13 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
 
 @RestController
-@RequestMapping("/tg")
+@RequestMapping("/tg/{username}/model/{modelId}")
 public class TokenController {
 
     @Autowired
     private TokenService service;
 
-    @PostMapping("/{username}/model/{modelId}/token")
+    @PostMapping("/token")
     public void save(
             @PathVariable String username,
             @PathVariable String modelId,

@@ -10,13 +10,13 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.HashMap;
 
 @RestController
-@RequestMapping("/tg")
+@RequestMapping("/tg/{username}/model")
 public class ModelController {
 
     @Autowired
     private ModelService service;
 
-    @GetMapping("/{username}/model")
+    @GetMapping("/")
     public HashMap<String, Model> getAll(@PathVariable String username) {
         try {
             return service.getAll(username);
@@ -26,7 +26,7 @@ public class ModelController {
         }
     }
 
-    @GetMapping("/{username}/model/{modelName}")
+    @GetMapping("/{modelName}")
     public Model getById(
             @PathVariable String username,
             @PathVariable String modelName
@@ -39,7 +39,7 @@ public class ModelController {
         }
     }
 
-    @PostMapping("/{username}/model/{modelName}")
+    @PostMapping("/{modelName}")
     public void save(
             @PathVariable String username,
             @PathVariable String modelName,
@@ -53,7 +53,7 @@ public class ModelController {
         }
     }
 
-    @DeleteMapping("/{username}/model/{modelName}")
+    @DeleteMapping("/{modelName}")
     public void deleteById(
             @PathVariable String username,
             @PathVariable String modelName
