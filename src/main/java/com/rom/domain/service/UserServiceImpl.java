@@ -46,9 +46,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getById(String id) {
         if(!exists(id)) return null;
-        User res = repository.findById(id).get();
-        res.setPassword(null);
-        return res;
+        return repository.findById(id).get();
     }
 
     @Override
