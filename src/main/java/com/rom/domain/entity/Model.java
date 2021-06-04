@@ -1,5 +1,6 @@
 package com.rom.domain.entity;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -8,11 +9,13 @@ public class Model {
     private List<Token> tokens;
 
     public Model() {
+        this.fields = new ArrayList<>();
+        this.tokens = new ArrayList<>();
     }
 
     public Model(List<Field> fields, List<Token> tokens) {
-        this.fields = fields;
-        this.tokens = tokens;
+        this.fields = fields != null ? fields : new ArrayList<>();
+        this.tokens = tokens != null ? tokens : new ArrayList<>();
     }
 
     public List<Field> getFields() {

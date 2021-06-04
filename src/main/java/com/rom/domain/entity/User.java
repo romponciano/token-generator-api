@@ -14,12 +14,13 @@ public class User {
     private HashMap<String, Model> models;
 
     public User() {
+        this.models = new HashMap<>();
     }
 
     public User(String username, String password, HashMap<String, Model> models) {
         this.username = username;
         this.password = password;
-        this.models = models;
+        this.models = models != null ? models : new HashMap<>();
     }
 
     public String getUsername() {

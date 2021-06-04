@@ -1,5 +1,6 @@
 package com.rom.domain.entity;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -7,10 +8,12 @@ public class Token {
     private List<Field> token;
 
     public Token(List<Field> token) {
-        this.token = token;
+        this.token = token != null ? token : new ArrayList<>();
     }
 
-    public Token() {}
+    public Token() {
+        this.token = new ArrayList<>();
+    }
 
     public List<Field> getToken() {
         return token;
