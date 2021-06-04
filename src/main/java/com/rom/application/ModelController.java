@@ -16,6 +16,7 @@ public class ModelController {
     @Autowired
     private ModelService service;
 
+    @CrossOrigin(originPatterns = "*")
     @GetMapping("/")
     public HashMap<String, Model> getAll(@PathVariable String username) {
         try {
@@ -26,6 +27,7 @@ public class ModelController {
         }
     }
 
+    @CrossOrigin(originPatterns = "*")
     @GetMapping("/{modelName}")
     public Model getById(
             @PathVariable String username,
@@ -39,6 +41,7 @@ public class ModelController {
         }
     }
 
+    @CrossOrigin(originPatterns = "*")
     @PostMapping("/{modelName}")
     public void save(
             @PathVariable String username,
@@ -53,6 +56,7 @@ public class ModelController {
         }
     }
 
+    @CrossOrigin(originPatterns = "*")
     @DeleteMapping("/{modelName}")
     public void deleteById(
             @PathVariable String username,

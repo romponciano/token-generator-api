@@ -22,18 +22,21 @@ public class UserController {
         return hash;
     }
 
+    @CrossOrigin(originPatterns = "*")
     @GetMapping("/user/{id}")
     public User getById(@PathVariable String id) {
         if(!service.exists(id))
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         return service.getById(id);
     }
-    
+
+    @CrossOrigin(originPatterns = "*")
     @PostMapping("/user")
     public User save(@RequestBody User user) {
         return service.save(user);
     }
 
+    @CrossOrigin(originPatterns = "*")
     @DeleteMapping("/user/{id}")
     public void deleteById(@PathVariable String id) {
         if(!service.exists(id))

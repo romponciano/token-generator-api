@@ -63,7 +63,7 @@ public class ModelControllerTest {
     public void return_badRequest_when_getAll_incorrect() throws Exception {
         Mockito.when(service.getAll(user.getUsername())).thenThrow(NullPointerException.class);
 
-        String url = "/tg/" + user.getUsername() + "/model";
+        String url = "/tg/" + user.getUsername() + "/model/";
         mockMvc
                 .perform(MockMvcRequestBuilders.get(url))
                 .andExpect(MockMvcResultMatchers.status().isBadRequest());

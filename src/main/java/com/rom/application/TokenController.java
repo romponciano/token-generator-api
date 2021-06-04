@@ -16,6 +16,7 @@ public class TokenController {
     @Autowired
     private TokenService service;
 
+    @CrossOrigin(originPatterns = "*")
     @PostMapping("/token")
     public void save(
             @PathVariable String username,
