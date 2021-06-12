@@ -1,5 +1,6 @@
 package com.rom.application;
 
+import com.rom.domain.dto.UserRequest;
 import com.rom.domain.entity.User;
 import com.rom.domain.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,13 @@ public class UserController {
     @PostMapping("/user")
     public User save(@RequestBody User user) {
         return service.save(user);
+    }
+
+    @CrossOrigin(originPatterns = "*")
+    @PutMapping("/user")
+    public void save(@RequestBody UserRequest user) {
+        if(!service.update(user))
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
     }
 
     @CrossOrigin(originPatterns = "*")

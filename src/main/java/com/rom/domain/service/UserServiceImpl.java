@@ -1,5 +1,6 @@
 package com.rom.domain.service;
 
+import com.rom.domain.dto.UserRequest;
 import com.rom.domain.entity.User;
 import com.rom.domain.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,20 @@ public class UserServiceImpl implements UserService {
     public boolean exists(String username, String modelName) {
         Optional<User> user = repository.findById(username);
         return user.filter(u -> u.getModels().get(modelName) != null).isPresent();
+    }
+
+    @Override
+    public boolean update(UserRequest user) {
+        User savedUser = getById(user.getUsername());
+        if(savedUser != null && savedUser.getPassword().equals(user.getPassword())) {
+            String newUsername = user.getNewUsername();
+            if(newUsername != null) savedUser.setUsername(newUsername);
+            String newPassword = user.getNewPassword();
+            if(newPassword != null) savedUser.setPassword(newPassword);
+            save(savedUser);
+            return true;
+        }
+        return false;
     }
 
     @Override
