@@ -39,9 +39,15 @@ public class UserController {
 
     @CrossOrigin(originPatterns = "*")
     @PutMapping("/user")
-    public void save(@RequestBody UserRequest user) {
+    public void update(@RequestBody UserRequest user) {
         if(!service.update(user))
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+    }
+
+    @CrossOrigin(originPatterns = "*")
+    @GetMapping("/user/{username}/exists")
+    public boolean exists(@PathVariable String username) {
+        return service.exists(username);
     }
 
     @CrossOrigin(originPatterns = "*")

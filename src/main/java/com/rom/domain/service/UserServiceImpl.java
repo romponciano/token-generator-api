@@ -40,12 +40,20 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean update(UserRequest user) {
         User savedUser = getById(user.getUsername());
+        String oldUsername = null;
         if(savedUser != null && savedUser.getPassword().equals(user.getPassword())) {
-            String newUsername = user.getNewUsername();
-            if(newUsername != null) savedUser.setUsername(newUsername);
             String newPassword = user.getNewPassword();
             if(newPassword != null) savedUser.setPassword(newPassword);
+
+            String newUsername = user.getNewUsername();
+            if(newUsername != null) {
+                oldUsername = savedUser.getUsername();
+                savedUser.setUsername(newUsername);
+            }
+
             save(savedUser);
+            if(oldUsername != null) deleteById(oldUsername);
+
             return true;
         }
         return false;
