@@ -49,8 +49,8 @@ public class UserController {
     @GetMapping("/user/{username}/exists")
     public ResponseEntity<String> exists(@PathVariable String username) {
         return service.exists(username)
-            ? new ResponseEntity<String>(HttpStatus.ACCEPTED)
-            : new ResponseEntity<String>(HttpStatus.FORBIDDEN);
+            ? new ResponseEntity<String>(HttpStatus.FORBIDDEN)
+            : new ResponseEntity<String>(HttpStatus.OK);
     }
 
     @CrossOrigin(originPatterns = "*")
