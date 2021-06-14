@@ -5,6 +5,7 @@ import com.rom.domain.entity.User;
 import com.rom.domain.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -46,8 +47,10 @@ public class UserController {
 
     @CrossOrigin(originPatterns = "*")
     @GetMapping("/user/{username}/exists")
-    public boolean exists(@PathVariable String username) {
-        return service.exists(username);
+    public ResponseEntity<String> exists(@PathVariable String username) {
+        return service.exists(username)
+            ? new ResponseEntity<String>(HttpStatus.ACCEPTED)
+            : new ResponseEntity<String>(HttpStatus.FORBIDDEN);
     }
 
     @CrossOrigin(originPatterns = "*")
