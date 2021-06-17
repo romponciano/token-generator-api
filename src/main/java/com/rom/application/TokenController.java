@@ -10,7 +10,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
 
 @RestController
-@RequestMapping("/tg/{username}/model/{modelId}")
+@RequestMapping("/tg")
 public class TokenController {
 
     @Autowired
