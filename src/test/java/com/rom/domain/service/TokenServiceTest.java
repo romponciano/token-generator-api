@@ -3,6 +3,7 @@ package com.rom.domain.service;
 import com.google.gson.Gson;
 import com.rom.Utils;
 import com.rom.domain.entity.User;
+import com.rom.domain.repository.TokenRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,6 +24,9 @@ public class TokenServiceTest {
 
     @MockBean
     private UserService userService;
+
+    @MockBean
+    private TokenRepository repository;
 
     @Autowired
     private TokenService service;

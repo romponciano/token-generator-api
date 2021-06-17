@@ -18,7 +18,7 @@ public class TokenTest {
 
     @Test
     public void create_emptyList_when_tryCreateNullFieldsAndTokens2nConstructor() {
-        Token response = new Token(null);
+        Token response = new Token(null, "user", "model", null);
 
         assertEquals(0, response.getToken().size());
     }
@@ -29,7 +29,7 @@ public class TokenTest {
         fields.add(new Field());
         fields.add(new Field());
 
-        Token response = new Token(fields);
+        Token response = new Token(null, "user", "model", fields);
 
         assertEquals(fields.size(), response.getToken().size());
     }

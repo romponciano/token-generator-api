@@ -27,4 +27,18 @@ public class TokenController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         service.save(username, modelId, tokens);
     }
+
+    @CrossOrigin(originPatterns = "*")
+    @GetMapping("/token/{tokenId}")
+    public Token getById(@PathVariable String tokenId) {
+        if(!service.exists(tokenId))
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        return service.getById(tokenId);
+    }
+
+    @CrossOrigin(originPatterns = "*")
+    @GetMapping("/token/{username}")
+    public List<Token> getByUser(@PathVariable String username) {
+        return service.getByUser(username);
+    }
 }
