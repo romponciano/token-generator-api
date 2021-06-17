@@ -17,18 +17,6 @@ public class TokenController {
     private TokenService service;
 
     @CrossOrigin(originPatterns = "*")
-    @PostMapping("/token")
-    public void save(
-            @PathVariable String username,
-            @PathVariable String modelId,
-            @RequestBody List<Token> tokens
-    ) {
-        if(!service.exists(username, modelId))
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
-        service.save(username, modelId, tokens);
-    }
-
-    @CrossOrigin(originPatterns = "*")
     @GetMapping("/token/{tokenId}")
     public Token getById(@PathVariable String tokenId) {
         if(!service.exists(tokenId))
