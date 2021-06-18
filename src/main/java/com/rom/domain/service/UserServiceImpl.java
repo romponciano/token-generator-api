@@ -16,13 +16,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public String login(User login) {
-        Optional<User> official =  repository.findById(login.getUsername());
+        User official =  getByUsername(login.getUsername());
 
-        if(!official.isPresent()) return null;
+        if(official == null) return null;
 
-        User user = official.get();
-        return login.getPassword().equals(user.getPassword())
-                ? String.valueOf(user.hashCode())
+        return login.getPassword().equals(official.getPassword())
+                ? official.getId()
                 : null;
     }
 
@@ -32,31 +31,33 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean exists(String username, String modelName) {
-        Optional<User> user = repository.findById(username);
-        return user.filter(u -> u.getModels().get(modelName) != null).isPresent();
+    public boolean existsByUsername(String username) {
+        return getByUsername(username) != null;
     }
 
     @Override
-    public boolean update(UserRequest user) {
-        User savedUser = getById(user.getUsername());
-        String oldUsername = null;
-        if(savedUser != null && savedUser.getPassword().equals(user.getPassword())) {
-            String newPassword = user.getNewPassword();
+    public boolean update(UserRequest request) {
+        User savedUser = getByUsername(request.getUsername());
+
+        if(savedUser != null && savedUser.getPassword().equals(request.getPassword())) {
+            String newPassword = request.getNewPassword();
             if(newPassword != null) savedUser.setPassword(newPassword);
 
-            String newUsername = user.getNewUsername();
+            String newUsername = request.getNewUsername();
             if(newUsername != null) {
-                oldUsername = savedUser.getUsername();
                 savedUser.setUsername(newUsername);
             }
 
             save(savedUser);
-            if(oldUsername != null) deleteById(oldUsername);
-
             return true;
         }
         return false;
+    }
+
+    @Override
+    public User getByUsername(String username) {
+        Optional<User> user = repository.findByUsername(username);
+        return user.orElse(null);
     }
 
     @Override
@@ -73,7 +74,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void deleteById(String id) {
-        repository.deleteById(id);
+    public boolean deleteById(String id, UserRequest request) {
+        User user = getById(id);
+        if(user.getPassword().equals(request.getPassword())) {
+            repository.deleteById(id);
+            return true;
+        }
+        return false;
     }
 }

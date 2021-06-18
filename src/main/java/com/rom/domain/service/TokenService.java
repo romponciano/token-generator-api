@@ -9,7 +9,13 @@ public interface TokenService {
 
     Token getById(String tokenId);
 
-    boolean exists(String tokenId);
-
     List<Token> getByUser(String username);
+
+    void deleteById(String tokenId);
+
+    List<Token> getByModel(String modelId);
+
+    void deleteByModel(String modelId);
+
+    void deleteByUser(String userId);
 }

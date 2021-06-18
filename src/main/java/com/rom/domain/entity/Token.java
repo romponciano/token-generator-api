@@ -11,20 +11,20 @@ import java.util.Objects;
 public class Token {
     @Id
     private String id;
-    private String username;
+    private String userId;
     private String modelId;
-    private List<Field> token;
+    private List<Field> tokens;
 
-    public Token(String id, String username, String modelId, List<Field> token) {
+    public Token(String id, String userId, String modelId, List<Field> tokens) {
         setId(id);
-        setToken(token);
-        this.username = username;
+        setTokens(tokens);
+        this.userId = userId;
         this.modelId = modelId;
     }
 
     public Token() {
         setId(null);
-        setToken(null);
+        setTokens(null);
     }
 
     public String getId() {
@@ -33,16 +33,16 @@ public class Token {
 
     public void setId(String id) {
         this.id = id == null
-            ? getUsername() + "-" + getModelId()
+            ? getUserId() + "-" + getModelId()
             : id;
     }
 
-    public String getUsername() {
-        return username;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public String getModelId() {
@@ -53,14 +53,14 @@ public class Token {
         this.modelId = modelId;
     }
 
-    public List<Field> getToken() {
-        return token;
+    public List<Field> getTokens() {
+        return tokens;
     }
 
-    public void setToken(List<Field> token) {
-        this.token = token == null
+    public void setTokens(List<Field> tokens) {
+        this.tokens = tokens == null
             ? new ArrayList<>()
-            : token;
+            : tokens;
     }
 
     @Override
@@ -68,11 +68,11 @@ public class Token {
         if (this == o) return true;
         if (!(o instanceof Token)) return false;
         Token token1 = (Token) o;
-        return Objects.equals(getId(), token1.getId()) && Objects.equals(getUsername(), token1.getUsername()) && Objects.equals(getModelId(), token1.getModelId()) && Objects.equals(getToken(), token1.getToken());
+        return Objects.equals(getId(), token1.getId()) && Objects.equals(getUserId(), token1.getUserId()) && Objects.equals(getModelId(), token1.getModelId()) && Objects.equals(getTokens(), token1.getTokens());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getUsername(), getModelId(), getToken());
+        return Objects.hash(getId(), getUserId(), getModelId(), getTokens());
     }
 }

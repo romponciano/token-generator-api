@@ -11,9 +11,6 @@ import java.util.List;
 public class TokenServiceImpl implements TokenService {
 
     @Autowired
-    private UserService userService;
-
-    @Autowired
     private TokenRepository repository;
 
     @Override
@@ -23,16 +20,31 @@ public class TokenServiceImpl implements TokenService {
 
     @Override
     public Token getById(String tokenId) {
-        return repository.findById(tokenId).get();
+        return repository.findById(tokenId).orElse(null);
     }
 
     @Override
-    public boolean exists(String tokenId) {
-        return repository.existsById(tokenId);
+    public List<Token> getByUser(String userId) {
+        return repository.findByUserId(userId);
     }
 
     @Override
-    public List<Token> getByUser(String username) {
-        return repository.findByUser(username + "*");
+    public void deleteById(String tokenId) {
+        repository.deleteById(tokenId);
+    }
+
+    @Override
+    public List<Token> getByModel(String modelId) {
+        return repository.findByModelId(modelId);
+    }
+
+    @Override
+    public void deleteByModel(String modelId) {
+        repository.deleteByModelId(modelId);
+    }
+
+    @Override
+    public void deleteByUser(String userId) {
+        repository.deleteByUserId(userId);
     }
 }

@@ -7,63 +7,38 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.HashMap;
+import java.util.List;
 
 @RestController
-@RequestMapping("/tg/{username}/model")
+@RequestMapping("/tg/model")
 public class ModelController {
 
     @Autowired
     private ModelService service;
 
     @CrossOrigin(originPatterns = "*")
-    @GetMapping("/")
-    public HashMap<String, Model> getAll(@PathVariable String username) {
-        try {
-            return service.getAll(username);
-        } catch (Throwable e) {
-            e.printStackTrace();
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
-        }
+    @GetMapping("/user/{userId}")
+    public List<Model> getByUserId(@PathVariable String userId) {
+        return service.getByUserId(userId);
     }
 
     @CrossOrigin(originPatterns = "*")
-    @GetMapping("/{modelName}")
-    public Model getById(
-            @PathVariable String username,
-            @PathVariable String modelName
-    ) {
-        try {
-            return service.getById(username, modelName);
-        } catch (Throwable e) {
-            e.printStackTrace();
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
-        }
+    @GetMapping("/{id}")
+    public Model getById(@PathVariable String id) {
+        return service.getById(id);
     }
 
     @CrossOrigin(originPatterns = "*")
-    @PostMapping("/{modelName}")
-    public void save(
-            @PathVariable String username,
-            @PathVariable String modelName,
-            @RequestBody Model model
-    ) {
-        try {
-            service.save(username, modelName, model);
-        } catch (Throwable e) {
-            e.printStackTrace();
+    @PostMapping("/")
+    public Model save(@RequestBody Model model) {
+        if(model.getUserId() == null || model.getName() == null)
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
-        }
+        return service.save(model);
     }
 
     @CrossOrigin(originPatterns = "*")
-    @DeleteMapping("/{modelName}")
-    public void deleteById(
-            @PathVariable String username,
-            @PathVariable String modelName
-    ) {
-        if(!service.exists(username, modelName))
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
-        service.deleteById(username, modelName);
+    @DeleteMapping("/{id}")
+    public void deleteById(@PathVariable String id) {
+        service.deleteById(id);
     }
 }

@@ -3,24 +3,30 @@ package com.rom.domain.entity;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.HashMap;
 import java.util.Objects;
 
 @Document(collection = "users")
 public class User {
     @Id
+    private String id;
     private String username;
     private String password;
-    private HashMap<String, Model> models;
 
-    public User() {
-        this.models = new HashMap<>();
-    }
-
-    public User(String username, String password, HashMap<String, Model> models) {
+    public User(String id, String username, String password) {
+        this.id = id;
         this.username = username;
         this.password = password;
-        this.models = models != null ? models : new HashMap<>();
+    }
+
+    public User() {
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getUsername() {
@@ -39,33 +45,16 @@ public class User {
         this.password = password;
     }
 
-    public HashMap<String, Model> getModels() {
-        return models;
-    }
-
-    public void setModels(HashMap<String, Model> models) {
-        this.models = models;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof User)) return false;
         User user = (User) o;
-        return Objects.equals(getUsername(), user.getUsername()) && Objects.equals(getPassword(), user.getPassword()) && Objects.equals(getModels(), user.getModels());
+        return Objects.equals(getId(), user.getId()) && Objects.equals(getUsername(), user.getUsername()) && Objects.equals(getPassword(), user.getPassword());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getUsername(), getPassword(), getModels());
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                ", models=" + models +
-                '}';
+        return Objects.hash(getId(), getUsername(), getPassword());
     }
 }

@@ -1,21 +1,53 @@
 package com.rom.domain.entity;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+@Document
 public class Model {
+    @Id
+    private String id;
+    private String name;
+    private String userId;
     private List<Field> fields;
-    private List<Token> tokens;
 
-    public Model() {
-        this.fields = new ArrayList<>();
-        this.tokens = new ArrayList<>();
+    public Model(String id, String modelName, String userId, List<Field> fields) {
+        this.id = id;
+        this.name = modelName;
+        this.userId = userId;
+        setFields(fields);
     }
 
-    public Model(List<Field> fields, List<Token> tokens) {
-        this.fields = fields != null ? fields : new ArrayList<>();
-        this.tokens = tokens != null ? tokens : new ArrayList<>();
+    public Model() {
+        setFields(null);
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public List<Field> getFields() {
@@ -23,15 +55,9 @@ public class Model {
     }
 
     public void setFields(List<Field> fields) {
-        this.fields = fields;
-    }
-
-    public List<Token> getTokens() {
-        return tokens;
-    }
-
-    public void setTokens(List<Token> tokens) {
-        this.tokens = tokens;
+        this.fields = fields == null
+            ? new ArrayList<>()
+            : fields;
     }
 
     @Override
@@ -39,19 +65,11 @@ public class Model {
         if (this == o) return true;
         if (!(o instanceof Model)) return false;
         Model model = (Model) o;
-        return Objects.equals(getFields(), model.getFields()) && Objects.equals(getTokens(), model.getTokens());
+        return Objects.equals(getId(), model.getId()) && Objects.equals(getName(), model.getName()) && Objects.equals(getUserId(), model.getUserId()) && Objects.equals(getFields(), model.getFields());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getFields(), getTokens());
-    }
-
-    @Override
-    public String toString() {
-        return "Model{" +
-                "fields=" + fields +
-                ", tokens=" + tokens +
-                '}';
+        return Objects.hash(getId(), getName(), getUserId(), getFields());
     }
 }

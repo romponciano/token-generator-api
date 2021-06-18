@@ -10,54 +10,51 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 @RestController
-@RequestMapping("/tg")
+@RequestMapping("/tg/user")
 public class UserController {
 
     @Autowired
     private UserService service;
 
     @CrossOrigin(originPatterns = "*")
-    @PostMapping("/user/login")
+    @PostMapping("/login")
     public String login(@RequestBody User user) {
-        String hash = service.login(user);
-        if(hash == null) throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
-        return hash;
+        String id = service.login(user);
+        if(id == null) throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        return id;
     }
 
     @CrossOrigin(originPatterns = "*")
-    @GetMapping("/user/{id}")
-    public User getById(@PathVariable String id) {
-        if(!service.exists(id))
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
-        return service.getById(id);
-    }
-
-    @CrossOrigin(originPatterns = "*")
-    @PostMapping("/user")
+    @PostMapping("/")
     public User save(@RequestBody User user) {
         return service.save(user);
     }
 
     @CrossOrigin(originPatterns = "*")
-    @PutMapping("/user")
+    @PutMapping("/")
     public void update(@RequestBody UserRequest user) {
         if(!service.update(user))
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
     }
 
     @CrossOrigin(originPatterns = "*")
-    @GetMapping("/user/{username}/exists")
+    @GetMapping("/{username}/exists")
     public ResponseEntity<String> exists(@PathVariable String username) {
-        return service.exists(username)
+        return service.existsByUsername(username)
             ? new ResponseEntity<String>(HttpStatus.FORBIDDEN)
             : new ResponseEntity<String>(HttpStatus.OK);
     }
 
     @CrossOrigin(originPatterns = "*")
-    @DeleteMapping("/user/{id}")
-    public void deleteById(@PathVariable String id) {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteById(
+            @PathVariable String id,
+            @RequestBody UserRequest request
+    ) {
         if(!service.exists(id))
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
-        service.deleteById(id);
+        return service.deleteById(id, request)
+                ? new ResponseEntity<String>(HttpStatus.OK)
+                : new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
     }
 }

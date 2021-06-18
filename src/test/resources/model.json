@@ -1,0 +1,21 @@
+{
+  "name": "MODEL1",
+  "userId": "87d8fa98f78f78",
+  "fields": [
+    {
+      "name": "player name",
+      "type": "text",
+      "value": null
+    },
+    {
+      "name": "level",
+      "type": "number",
+      "value": null
+    },
+    {
+      "name": "class",
+      "type": "select",
+      "value": null
+    }
+  ]
+}

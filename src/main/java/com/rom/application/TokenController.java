@@ -10,31 +10,55 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
 
 @RestController
-@RequestMapping("/tg")
+@RequestMapping("/tg/token")
 public class TokenController {
 
     @Autowired
     private TokenService service;
 
     @CrossOrigin(originPatterns = "*")
-    @PostMapping("/token")
+    @PostMapping("/")
     public Token save(@RequestBody Token token) {
-        if(token.getUsername() == null || token.getModelId() == null)
+        if(token.getUserId() == null || token.getModelId() == null)
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         return service.save(token);
     }
 
     @CrossOrigin(originPatterns = "*")
-    @GetMapping("/token/{tokenId}")
+    @GetMapping("/{tokenId}")
     public Token getById(@PathVariable String tokenId) {
-        if(!service.exists(tokenId))
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         return service.getById(tokenId);
     }
 
     @CrossOrigin(originPatterns = "*")
-    @GetMapping("/token/{username}")
-    public List<Token> getByUser(@PathVariable String username) {
-        return service.getByUser(username);
+    @DeleteMapping("/{tokenId}")
+    public void deleteById(@PathVariable String tokenId) {
+        service.deleteById(tokenId);
+    }
+
+    // ############## by model
+    @CrossOrigin(originPatterns = "*")
+    @GetMapping("/model/{modelId}")
+    public List<Token> getByModel(@PathVariable String modelId) {
+        return service.getByModel(modelId);
+    }
+
+    @CrossOrigin(originPatterns = "*")
+    @DeleteMapping("/model/{modelId}")
+    public void deleteByModel(@PathVariable String modelId) {
+        service.deleteByModel(modelId);
+    }
+
+    // ############## by user
+    @CrossOrigin(originPatterns = "*")
+    @GetMapping("/user/{userId}")
+    public List<Token> getByUser(@PathVariable String userId) {
+        return service.getByUser(userId);
+    }
+
+    @CrossOrigin(originPatterns = "*")
+    @DeleteMapping("/user/{userId}")
+    public void deleteByUser(@PathVariable String userId) {
+        service.deleteByUser(userId);
     }
 }

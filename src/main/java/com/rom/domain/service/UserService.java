@@ -7,15 +7,17 @@ public interface UserService {
 
     User getById(String id);
 
+    User getByUsername(String username);
+
     User save(User user);
-    
-    void deleteById(String id);
 
     String login(User request);
 
     boolean exists(String id);
 
-    boolean exists(String username, String modelName);
+    boolean existsByUsername(String username);
 
     boolean update(UserRequest user);
+
+    boolean deleteById(String id, UserRequest request);
 }

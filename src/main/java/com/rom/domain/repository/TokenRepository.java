@@ -9,5 +9,11 @@ import java.util.List;
 @Repository
 public interface TokenRepository extends MongoRepository<Token, String> {
 
-    List<Token> findByUser(String username);
+    List<Token> findByUserId(String username);
+
+    List<Token> findByModelId(String modelId);
+
+    void deleteByModelId(String modelId);
+
+    void deleteByUserId(String userId);
 }
