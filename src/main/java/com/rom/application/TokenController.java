@@ -27,7 +27,10 @@ public class TokenController {
     @CrossOrigin(originPatterns = "*")
     @GetMapping("/{tokenId}")
     public Token getById(@PathVariable String tokenId) {
-        return service.getById(tokenId);
+        Token res = service.getById(tokenId);
+        if(res == null)
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        return res;
     }
 
     @CrossOrigin(originPatterns = "*")
@@ -40,7 +43,10 @@ public class TokenController {
     @CrossOrigin(originPatterns = "*")
     @GetMapping("/model/{modelId}")
     public List<Token> getByModel(@PathVariable String modelId) {
-        return service.getByModel(modelId);
+        List<Token> res = service.getByModel(modelId);
+        if(res == null || res.isEmpty())
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        return res;
     }
 
     @CrossOrigin(originPatterns = "*")
@@ -53,7 +59,10 @@ public class TokenController {
     @CrossOrigin(originPatterns = "*")
     @GetMapping("/user/{userId}")
     public List<Token> getByUser(@PathVariable String userId) {
-        return service.getByUser(userId);
+        List<Token> res = service.getByUser(userId);
+        if(res == null || res.isEmpty())
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        return res;
     }
 
     @CrossOrigin(originPatterns = "*")

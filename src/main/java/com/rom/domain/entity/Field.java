@@ -41,24 +41,10 @@ public class Field {
     }
 
     @Override
-    public String toString() {
-        return "Field{" +
-                "name='" + name + '\'' +
-                ", type='" + type + '\'' +
-                ", value=" + value +
-                '}';
-    }
-
-    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Field)) return false;
         Field field = (Field) o;
         return Objects.equals(getName(), field.getName()) && Objects.equals(getType(), field.getType()) && Objects.equals(getValue(), field.getValue());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getName(), getType(), getValue());
     }
 }

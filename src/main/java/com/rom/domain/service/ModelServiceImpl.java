@@ -2,6 +2,7 @@ package com.rom.domain.service;
 
 import com.rom.domain.entity.Model;
 import com.rom.domain.repository.ModelRepository;
+import com.rom.domain.repository.TokenRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +17,9 @@ public class ModelServiceImpl implements ModelService {
     @Autowired
     private ModelRepository repository;
 
+    @Autowired
+    private TokenService tokenService;
+
     @Override
     public Model getById(String id) {
         return repository.findById(id).orElse(null);
@@ -28,6 +32,7 @@ public class ModelServiceImpl implements ModelService {
 
     @Override
     public void deleteById(String id) {
+        tokenService.deleteByModel(id);
         repository.deleteById(id);
     }
 

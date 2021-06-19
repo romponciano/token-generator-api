@@ -16,14 +16,13 @@ public class Token {
     private List<Field> tokens;
 
     public Token(String id, String userId, String modelId, List<Field> tokens) {
-        setId(id);
-        setTokens(tokens);
+        this.id = id;
         this.userId = userId;
         this.modelId = modelId;
+        setTokens(tokens);
     }
 
     public Token() {
-        setId(null);
         setTokens(null);
     }
 
@@ -69,10 +68,5 @@ public class Token {
         if (!(o instanceof Token)) return false;
         Token token1 = (Token) o;
         return Objects.equals(getId(), token1.getId()) && Objects.equals(getUserId(), token1.getUserId()) && Objects.equals(getModelId(), token1.getModelId()) && Objects.equals(getTokens(), token1.getTokens());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getId(), getUserId(), getModelId(), getTokens());
     }
 }

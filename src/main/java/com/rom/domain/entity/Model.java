@@ -67,9 +67,4 @@ public class Model {
         Model model = (Model) o;
         return Objects.equals(getId(), model.getId()) && Objects.equals(getName(), model.getName()) && Objects.equals(getUserId(), model.getUserId()) && Objects.equals(getFields(), model.getFields());
     }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getId(), getName(), getUserId(), getFields());
-    }
 }

@@ -9,7 +9,7 @@ public interface UserService {
 
     User getByUsername(String username);
 
-    User save(User user);
+    User save(User user) throws Exception;
 
     String login(User request);
 
@@ -17,7 +17,7 @@ public interface UserService {
 
     boolean existsByUsername(String username);
 
-    boolean update(UserRequest user);
+    boolean update(UserRequest user) throws Exception;
 
     boolean deleteById(String id, UserRequest request);
 }

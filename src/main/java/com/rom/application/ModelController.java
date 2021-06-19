@@ -19,13 +19,19 @@ public class ModelController {
     @CrossOrigin(originPatterns = "*")
     @GetMapping("/user/{userId}")
     public List<Model> getByUserId(@PathVariable String userId) {
-        return service.getByUserId(userId);
+        List<Model> res = service.getByUserId(userId);
+        if(res == null || res.isEmpty())
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        return res;
     }
 
     @CrossOrigin(originPatterns = "*")
     @GetMapping("/{id}")
     public Model getById(@PathVariable String id) {
-        return service.getById(id);
+        Model res = service.getById(id);
+        if(res == null)
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        return res;
     }
 
     @CrossOrigin(originPatterns = "*")

@@ -27,14 +27,24 @@ public class UserController {
     @CrossOrigin(originPatterns = "*")
     @PostMapping("/")
     public User save(@RequestBody User user) {
-        return service.save(user);
+        try {
+            return service.save(user);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
     }
 
     @CrossOrigin(originPatterns = "*")
     @PutMapping("/")
     public void update(@RequestBody UserRequest user) {
-        if(!service.update(user))
+        try {
+            if(!service.update(user))
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            e.printStackTrace();
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
     }
 
     @CrossOrigin(originPatterns = "*")
