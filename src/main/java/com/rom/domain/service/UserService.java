@@ -17,7 +17,7 @@ public interface UserService {
 
     boolean existsByUsername(String username);
 
-    boolean update(UserRequest user) throws Exception;
+    User update(UserRequest user) throws Exception;
 
     boolean deleteById(String id, UserRequest request);
 }

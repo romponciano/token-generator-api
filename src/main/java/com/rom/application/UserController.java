@@ -37,10 +37,12 @@ public class UserController {
 
     @CrossOrigin(originPatterns = "*")
     @PutMapping("/")
-    public void update(@RequestBody UserRequest user) {
+    public User update(@RequestBody UserRequest user) {
         try {
-            if(!service.update(user))
+            User res = service.update(user);
+            if(res == null)
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+            return res;
         } catch (Exception e) {
             e.printStackTrace();
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);

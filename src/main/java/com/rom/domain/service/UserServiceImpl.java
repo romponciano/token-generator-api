@@ -36,7 +36,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean update(UserRequest request) throws Exception {
+    public User update(UserRequest request) throws Exception {
         User savedUser = getByUsername(request.getUsername());
 
         if(savedUser != null && savedUser.getPassword().equals(request.getPassword())) {
@@ -48,10 +48,9 @@ public class UserServiceImpl implements UserService {
                 savedUser.setUsername(newUsername);
             }
 
-            save(savedUser);
-            return true;
+            return repository.save(savedUser);
         }
-        return false;
+        return null;
     }
 
     @Override
@@ -64,9 +63,7 @@ public class UserServiceImpl implements UserService {
     public User save(User user) throws Exception {
         if(existsByUsername(user.getUsername()) || exists(user.getId()))
             throw new Exception("Already exists");
-        User res = repository.save(user);
-        res.setPassword(null);
-        return res;
+        return repository.save(user);
     }
 
     @Override
