@@ -15,13 +15,13 @@ public class UserServiceImpl implements UserService {
     private UserRepository repository;
 
     @Override
-    public String login(User login) {
+    public User login(User login) {
         User official =  getByUsername(login.getUsername());
 
         if(official == null) return null;
 
         return login.getPassword().equals(official.getPassword())
-                ? official.getId()
+                ? official
                 : null;
     }
 

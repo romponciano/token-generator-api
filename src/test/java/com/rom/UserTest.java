@@ -50,7 +50,10 @@ public class UserTest {
                 .andReturn()
                 .getResponse().getContentAsString();
 
-        assertTrue(res.equals(user.getId()));
+        User userRes = gson.fromJson(res, User.class);
+        assertTrue(userRes.getId() != null);
+        assertTrue(userRes.getPassword() == null);
+        assertTrue(user.getUsername().equals(userRes.getUsername()));
     }
 
     @Test

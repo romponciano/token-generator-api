@@ -11,7 +11,7 @@ public interface UserService {
 
     User save(User user) throws Exception;
 
-    String login(User request);
+    User login(User request);
 
     boolean exists(String id);
 

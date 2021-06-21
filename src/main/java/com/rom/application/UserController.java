@@ -18,10 +18,11 @@ public class UserController {
 
     @CrossOrigin(originPatterns = "*")
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody User user) {
-        String id = service.login(user);
-        if(id == null) throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
-        return new ResponseEntity<String>(id, HttpStatus.OK);
+    public User login(@RequestBody User user) {
+        User res = service.login(user);
+        if(res == null) throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        res.setPassword(null);
+        return res;
     }
 
     @CrossOrigin(originPatterns = "*")
