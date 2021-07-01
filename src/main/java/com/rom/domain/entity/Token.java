@@ -11,11 +11,12 @@ import java.util.Objects;
 public class Token {
     @Id
     private String id;
+    private String image;
     private String userId;
     private String modelId;
     private List<Field> tokens;
 
-    public Token(String id, String userId, String modelId, List<Field> tokens) {
+    public Token(String id, String image, String userId, String modelId, List<Field> tokens) {
         this.id = id;
         this.userId = userId;
         this.modelId = modelId;
@@ -62,11 +63,19 @@ public class Token {
             : tokens;
     }
 
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Token)) return false;
         Token token1 = (Token) o;
-        return Objects.equals(getId(), token1.getId()) && Objects.equals(getUserId(), token1.getUserId()) && Objects.equals(getModelId(), token1.getModelId()) && Objects.equals(getTokens(), token1.getTokens());
+        return Objects.equals(getId(), token1.getId()) && Objects.equals(getUserId(), token1.getUserId()) && Objects.equals(getModelId(), token1.getModelId()) && Objects.equals(getTokens(), token1.getTokens()) && Objects.equals(getImage(), token1.getImage());
     }
 }

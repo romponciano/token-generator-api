@@ -11,14 +11,16 @@ import java.util.Objects;
 public class Model {
     @Id
     private String id;
+    private String image;
     private String name;
     private String userId;
     private List<Field> fields;
 
-    public Model(String id, String modelName, String userId, List<Field> fields) {
+    public Model(String id, String image, String modelName, String userId, List<Field> fields) {
         this.id = id;
         this.name = modelName;
         this.userId = userId;
+        this.image = image;
         setFields(fields);
     }
 
@@ -60,11 +62,19 @@ public class Model {
             : fields;
     }
 
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Model)) return false;
         Model model = (Model) o;
-        return Objects.equals(getId(), model.getId()) && Objects.equals(getName(), model.getName()) && Objects.equals(getUserId(), model.getUserId()) && Objects.equals(getFields(), model.getFields());
+        return Objects.equals(getId(), model.getId()) && Objects.equals(getName(), model.getName()) && Objects.equals(getUserId(), model.getUserId()) && Objects.equals(getFields(), model.getFields()) && Objects.equals(getImage(), model.getImage());
     }
 }
