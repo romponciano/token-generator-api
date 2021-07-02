@@ -4,16 +4,19 @@
   "userId": "87d8fa98f78f78",
   "fields": [
     {
+      "oder": 0,
       "name": "player name",
       "type": "text",
       "value": null
     },
     {
+      "oder": 1,
       "name": "level",
       "type": "number",
       "value": null
     },
     {
+      "oder": 2,
       "name": "class",
       "type": "select",
       "value": null
