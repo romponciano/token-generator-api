@@ -1,1 +1,1 @@
-web: java -Dmongo.uri=${MONGO_URI} -Dserver.port=${PORT} -jar target/token-generator-api-1.0-SNAPSHOT.jar
+web: java -Dmongo.uri=$MONGO_URI -Dserver.port=$PORT -jar target/token-generator-api-1.0-SNAPSHOT.jar
